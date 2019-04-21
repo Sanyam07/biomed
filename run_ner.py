@@ -656,6 +656,6 @@ if __name__ == "__main__":
     do_predict = True
     do_eval = True
     do_train = False
-    test_funct(data_dir=data_dir, init_checkpoint=init_checkpoint, vocab_file=vocab_file,
+    main_funct(data_dir=data_dir, init_checkpoint=init_checkpoint, vocab_file=vocab_file,
                bert_config_file=bert_config_file, output_dir=output_dir, do_train=do_train, do_eval=do_eval,
                do_predict=do_predict)

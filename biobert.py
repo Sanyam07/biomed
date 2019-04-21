@@ -9,6 +9,7 @@ class BioBert(NER):
     def __init__(self):
         self.data_dir = 'BC4CHEMD'
         self.config_root = 'config_dir'
+        self.output_dir = 'bio_output_dir'
         self.ground_truth_dict = dict()
 
     def convert_ground_truth(self, data, *args, **kwargs):
@@ -93,8 +94,17 @@ class BioBert(NER):
         return data
 
     def train(self, data=None, *args, **kwargs):
-        main_funct(mode='train', model_name='chunking_model', data_dir=self.data_dir, size=self.data_size,
-                   gdrive_mounted=self.gdrive_mounted)
+        data_dir = self.data_dir
+        init_checkpoint = '/content/gdrive/My Drive/biobert_pubmed/biobert_model.ckpt'
+        vocab_file = self.config_root+'/vocab.txt'
+        bert_config_file = self.config_root+'/bert_config.json'
+        output_dir = self.output_dir
+        do_train = True
+        do_eval = True
+        do_predict = False
+        main_funct(data_dir=data_dir, init_checkpoint=init_checkpoint, vocab_file=vocab_file,
+                   bert_config_file=bert_config_file, output_dir=output_dir, do_train=do_train, do_eval=do_eval,
+                   do_predict=do_predict)
 
     def predict(self, data=None, *args, **kwargs):
         output_predictions = main_funct(mode='eval', model_name='chunking_model', data_dir=self.data_dir, size=self.data_size,
