@@ -70,7 +70,6 @@ class BioBert(NER):
         test_lines = [[line.split()[0], line.split()[3]] for line in data['test']]
         dev_lines = [[line.split()[0], line.split()[3]] for line in data['dev'][dev_length//4:]]
         devel_lines = [[line.split()[0], line.split()[3]] for line in data['dev'][:dev_length//4]]
-        ipdb.set_trace()
         with open(output_train_filename, 'w') as f:
             tsv_writer = csv.writer(f, delimiter='\t')
             for row in train_lines:
