@@ -6,9 +6,9 @@ import csv
 class BioBert(NER):
 
     def __init__(self):
-        self.data_dir = 'BC4CHEMD'
-        self.config_root = 'config_dir'
-        self.output_dir = 'bio_output_dir'
+        self.data_dir = './BC4CHEMD'
+        self.config_root = './config_dir'
+        self.output_dir = './bio_output_dir'
         self.ground_truth_dict = dict()
 
     def convert_ground_truth(self, data, *args, **kwargs):
