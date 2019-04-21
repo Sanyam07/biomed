@@ -191,6 +191,6 @@ fabric.properties
 
 .idea/
 
-BC4CHEMD/*
+BC4CHEMD/*.tsv
 
 
