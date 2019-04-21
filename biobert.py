@@ -1,4 +1,3 @@
-import ipdb
 from ner import NER
 from run_ner import main_funct
 import csv
