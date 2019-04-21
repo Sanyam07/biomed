@@ -1,13 +1,14 @@
+import ipdb
 from ner import NER
-from os import system
+from run_ner import main_funct
+import csv
 
 
-class CrossViewTraining(NER):
+class BioBert(NER):
 
     def __init__(self):
-        self.data_dir = 'mini_data'
-        self.data_size = 'mini'
-        self.gdrive_mounted = 'f'
+        self.data_dir = 'BC4CHEMD'
+        self.config_root = 'config_dir'
         self.ground_truth_dict = dict()
 
     def convert_ground_truth(self, data, *args, **kwargs):
@@ -60,19 +61,36 @@ class CrossViewTraining(NER):
             raise ValueError("Invalid file_dict. Standard keys (train, test, dev)")
         except Exception as e:
             print('Something went wrong.', e)
-        output_train_filename = self.data_dir+"/raw_data/chunk/train.txt"
-        output_test_filename = self.data_dir+"/raw_data/chunk/test.txt"
-        train_lines = [" ".join(line.split()[0:4])+"\n" for line in data['train']]
-        test_lines = [" ".join(line.split()[0:4])+"\n" for line in data['test']]
+        output_train_filename = self.data_dir+"/train.tsv"
+        output_test_filename = self.data_dir+"/test.tsv"
+        output_dev_filename = self.data_dir+"/train_dev.tsv"
+        output_devel_filename = self.data_dir+"/devel.tsv"
+        dev_length = len(data['dev'])
+        train_lines = [[line.split()[0], line.split()[3]] for line in data['train']]
+        test_lines = [[line.split()[0], line.split()[3]] for line in data['test']]
+        dev_lines = [[line.split()[0], line.split()[3]] for line in data['dev'][dev_length//4:]]
+        devel_lines = [[line.split()[0], line.split()[3]] for line in data['dev'][:dev_length//4]]
+        ipdb.set_trace()
         with open(output_train_filename, 'w') as f:
-            f.writelines(train_lines)
+            tsv_writer = csv.writer(f, delimiter='\t')
+            for row in train_lines:
+                tsv_writer.writerow(row)
         with open(output_test_filename, 'w') as f:
-            f.writelines(test_lines)
+            tsv_writer = csv.writer(f, delimiter='\t')
+            for row in test_lines:
+                tsv_writer.writerow(row)
+        with open(output_dev_filename, 'w') as f:
+            tsv_writer = csv.writer(f, delimiter='\t')
+            for row in dev_lines:
+                tsv_writer.writerow(row)
+        with open(output_devel_filename, 'w') as f:
+            tsv_writer = csv.writer(f, delimiter='\t')
+            for row in devel_lines:
+                tsv_writer.writerow(row)
         del train_lines
         del test_lines
-        system("rm -rf mini_data/models")
-        system("rm -rf mini_data/preprocessed_data")
-        main_funct_pre(data_dir=self.data_dir, size=self.data_size, gdrive_mounted='f')
+        del dev_lines
+        del devel_lines
         return data
 
     def train(self, data=None, *args, **kwargs):
