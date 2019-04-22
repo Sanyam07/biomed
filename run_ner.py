@@ -644,7 +644,7 @@ def main_funct(data_dir=None, init_checkpoint=None, vocab_file=None, bert_config
     FLAGS.do_train = do_train
     FLAGS.do_eval = do_eval
     FLAGS.do_predict = do_predict
-    tf.app.run()
+    main('_')
 
 
 if __name__ == "__main__":
