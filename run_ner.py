@@ -635,7 +635,7 @@ def main(_):
 
 
 def main_funct(data_dir=None, init_checkpoint=None, vocab_file=None, bert_config_file=None, output_dir=None,
-               do_train=False, do_eval=True, do_predict=True):
+               do_train=False, do_eval=False, do_predict=False):
     FLAGS.data_dir = data_dir
     FLAGS.init_checkpoint = init_checkpoint
     FLAGS.vocab_file = vocab_file
@@ -645,17 +645,3 @@ def main_funct(data_dir=None, init_checkpoint=None, vocab_file=None, bert_config
     FLAGS.do_eval = do_eval
     FLAGS.do_predict = do_predict
     main('_')
-
-
-if __name__ == "__main__":
-    data_dir = "BC4CHEMD/"
-    init_checkpoint = '/content/gdrive/My Drive/biobert_pubmed/biobert_model.ckpt'
-    vocab_file = '/content/gdrive/My Drive/biobert_pubmed/vocab.txt'
-    bert_config_file = '/content/gdrive/My Drive/biobert_pubmed/bert_config.json'
-    output_dir = '/content/gdrive/My Drive/model_clipboard/bio_output_dir'
-    do_predict = True
-    do_eval = True
-    do_train = False
-    main_funct(data_dir=data_dir, init_checkpoint=init_checkpoint, vocab_file=vocab_file,
-               bert_config_file=bert_config_file, output_dir=output_dir, do_train=do_train, do_eval=do_eval,
-               do_predict=do_predict)
