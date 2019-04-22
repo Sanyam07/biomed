@@ -190,7 +190,7 @@ class NerProcessor(DataProcessor):
             self._read_data(os.path.join(data_dir, "test.tsv")), "test")
 
     def get_labels(self):
-        return ['', 'B-ABBREVIATION', 'B-CLASS', 'I-CLASS', 'B-MULTIPLE', 'B-IDENTIFIER', 'I-MULTIPLE', 'I-TRIVIAL', 'B-TRIVIAL', 'I-SYSTEMATIC', 'I-IDENTIFIER', 'B-SYSTEMATIC', 'I-FAMILY', 'B-FORMULA', 'I-ABBREVIATION', 'I-FORMULA', 'O', 'B-FAMILY']
+        return ["[CLS]", "[SEP]", '', 'B-ABBREVIATION', 'B-CLASS', 'I-CLASS', 'B-MULTIPLE', 'B-IDENTIFIER', 'I-MULTIPLE', 'I-TRIVIAL', 'B-TRIVIAL', 'I-SYSTEMATIC', 'I-IDENTIFIER', 'B-SYSTEMATIC', 'I-FAMILY', 'B-FORMULA', 'I-ABBREVIATION', 'I-FORMULA', 'O', 'B-FAMILY']
 
     def _create_example(self, lines, set_type):
         examples = []
