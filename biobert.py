@@ -12,17 +12,21 @@ class BioBert(NER):
         self.ground_truth_dict = dict()
 
     def convert_ground_truth(self, data, *args, **kwargs):
-        ground_truth = list()
-        for line in data:
-            if line:
-                temp = line.split()
-                token = temp[0]
-                label = temp[3]
-                ground_truth.append([token, label])
-                self.ground_truth_dict[token] = label
-            else:
-                continue
-        return ground_truth
+        if len(self.ground_truth_dict) > 0:
+            return list(self.ground_truth_dict.items())
+        else:
+            ground_truth = list()
+            for line in data:
+                if line:
+                    temp = line.split()
+                    if temp:
+                        token = temp[0]
+                        label = temp[3]
+                        ground_truth.append([token, label])
+                        self.ground_truth_dict[token] = label
+                else:
+                    continue
+            return ground_truth
 
     def read_dataset(self, file_dict=None, dataset_name=None, *args, **kwargs):
         """
@@ -66,10 +70,39 @@ class BioBert(NER):
         output_dev_filename = self.data_dir+"/train_dev.tsv"
         output_devel_filename = self.data_dir+"/devel.tsv"
         dev_length = len(data['dev'])
-        train_lines = [[line.split()[0], line.split()[3]] for line in data['train']]
-        test_lines = [[line.split()[0], line.split()[3]] for line in data['test']]
-        dev_lines = [[line.split()[0], line.split()[3]] for line in data['dev'][dev_length//4:]]
-        devel_lines = [[line.split()[0], line.split()[3]] for line in data['dev'][:dev_length//4]]
+        train_lines = list()
+        test_lines = list()
+        dev_lines = list()
+        devel_lines = list()
+
+        for line in data['train']:
+            temp = line.split()
+            if temp:
+                train_lines.append([temp[0], temp[3]])
+            else:
+                train_lines.append(['', ''])
+
+        for line in data['test']:
+            temp = line.split()
+            if temp:
+                test_lines.append([temp[0], temp[3]])
+            else:
+                test_lines.append(['', ''])
+
+        for line in data['dev'][dev_length//4:]:
+            temp = line.split()
+            if temp:
+                dev_lines.append([temp[0], temp[3]])
+            else:
+                dev_lines.append(['', ''])
+
+        for line in data['dev'][:dev_length//4]:
+            temp = line.split()
+            if temp:
+                devel_lines.append([temp[0], temp[3]])
+            else:
+                devel_lines.append(['', ''])
+
         with open(output_train_filename, 'w') as f:
             tsv_writer = csv.writer(f, delimiter='\t')
             for row in train_lines:
@@ -86,6 +119,12 @@ class BioBert(NER):
             tsv_writer = csv.writer(f, delimiter='\t')
             for row in devel_lines:
                 tsv_writer.writerow(row)
+        train_dict = dict(train_lines)
+        test_dict = dict(test_lines)
+        dev_dict = dict(dev_lines)
+        devel_dict = dict(devel_lines)
+        mega_dict = {**train_dict, **test_dict, **dev_dict, **devel_dict}
+        self.ground_truth_dict = mega_dict
         del train_lines
         del test_lines
         del dev_lines
