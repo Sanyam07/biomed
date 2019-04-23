@@ -164,17 +164,27 @@ class BioBert(NER):
                    do_predict=do_predict)
 
     def predict(self, data=None, *args, **kwargs):
-        output_predictions = main_funct(mode='eval', model_name='chunking_model', data_dir=self.data_dir, size=self.data_size,
-                   gdrive_mounted=self.gdrive_mounted)
-        output_file_path = self.data_dir + "/output.txt"
-        with open(output_file_path, 'w') as pred_op_f:
-            for val in output_predictions:
-                for vall in val:
-                    if vall[0] != '<missing>':
-                        true_label = self.ground_truth_dict[vall[0]]
-                        pred_op_f.write(vall[0] + ' ' + true_label + ' ' + vall[1] + '\n')
-                pred_op_f.write('\n')
+        data_dir = self.data_dir
+        init_checkpoint = '/content/gdrive/My Drive/biobert_pubmed/biobert_model.ckpt'
+        vocab_file = self.config_root + '/vocab.txt'
+        bert_config_file = self.config_root + '/bert_config.json'
+        output_dir = self.output_dir
+        do_train = False
+        do_eval = True
+        do_predict = True
+        main_funct(data_dir=data_dir, init_checkpoint=init_checkpoint, vocab_file=vocab_file,
+                   bert_config_file=bert_config_file, output_dir=output_dir, do_train=do_train, do_eval=do_eval,
+                   do_predict=do_predict)
 
     def evaluate(self, predictions=None, ground_truths=None, *args, **kwargs):
-        main_funct(mode='eval', model_name='chunking_model', data_dir=self.data_dir, size=self.data_size,
-                   gdrive_mounted=self.gdrive_mounted)
+        data_dir = self.data_dir
+        init_checkpoint = '/content/gdrive/My Drive/biobert_pubmed/biobert_model.ckpt'
+        vocab_file = self.config_root + '/vocab.txt'
+        bert_config_file = self.config_root + '/bert_config.json'
+        output_dir = self.output_dir
+        do_train = False
+        do_eval = True
+        do_predict = True
+        main_funct(data_dir=data_dir, init_checkpoint=init_checkpoint, vocab_file=vocab_file,
+                   bert_config_file=bert_config_file, output_dir=output_dir, do_train=do_train, do_eval=do_eval,
+                   do_predict=do_predict)
