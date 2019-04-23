@@ -176,13 +176,13 @@ class BioBert(NER):
         main_funct(data_dir=data_dir, init_checkpoint=init_checkpoint, vocab_file=vocab_file,
                    bert_config_file=bert_config_file, output_dir=output_dir, do_train=do_train, do_eval=do_eval,
                    do_predict=do_predict)
-        
+
         pred_token_test_path = self.output_dir+"/token_test.txt"
         pred_label_test_path = self.output_dir+"/label_test.txt"
         golden_path = self.data_dir+"/test.tsv"
 
-
-        detokenize(golden_path, pred_token_test_path, pred_label_test_path, output_dir)
+        detokenize(golden_path=golden_path, pred_token_test_path=pred_token_test_path,
+                   pred_label_test_path=pred_label_test_path, output_dir=output_dir)
 
         input_filename = self.output_dir+"/NER_result_conll.txt"
         output_filename = self.output_dir+"predicted_output.txt"
