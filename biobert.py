@@ -3,22 +3,24 @@ from run_ner import main_funct
 from random import choice
 from biocodes.ner_detokenize import detokenize
 from biocodes.conlleval import evaluate_conll_file
+from os import getcwd
 import csv
 
 
 class BioBert(NER):
 
     def __init__(self):
-        self.data_dir = './BC4CHEMD'
-        self.config_root = './config_dir'
+        self.project_root = getcwd()
+        self.data_dir = self.project_root+'/BC4CHEMD'
+        self.config_root = self.project_root+'/config_dir'
         # self.output_dir = '/home/de11bu23n58k/output_dir'
-        self.output_dir = './output_dir'
+        self.output_dir = self.project_root+'/output_dir'
         self.ground_truth_dict = dict()
         self.zip_threshold = 250
         self.upper_limit = 8
         self.seq = list(range(self.upper_limit))
 
-    def convert_ground_truth(self, data, *args, **kwargs):
+    def convert_ground_truth(self, data=None, *args, **kwargs):
         if len(self.ground_truth_dict) > 0:
             return list(self.ground_truth_dict.items())
         else:
@@ -29,7 +31,7 @@ class BioBert(NER):
                     if temp:
                         token = temp[0]
                         label = temp[3]
-                        ground_truth.append([token, label])
+                        ground_truth.append([None, None, token, label])
                         self.ground_truth_dict[token] = label
                 else:
                     continue
@@ -228,7 +230,10 @@ class BioBert(NER):
 
         print("Predictions output is available in: "+output_filename)
 
-        return None
+        length_zipped = len(zipped[1])
+        none_list = [None]*length_zipped
+        list_preds = list(zip(none_list, none_list, zipped[0], zipped[2]))
+        return list_preds
 
     def evaluate(self, predictions=None, ground_truths=None, *args, **kwargs):
         input_filename = self.output_dir+"/predicted_output.txt"
