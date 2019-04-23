@@ -71,10 +71,13 @@ def detokenize(golden_path, pred_token_test_path, pred_label_test_path, output_d
         print("Error! : len(bert_pred['toks']) != len(bert_pred['labels']) : Please report us")
         raise
    
-    if (len(ans['labels']) != len(bert_pred['labels'])): # Sanity check
-        print((len(ans['labels']), len(bert_pred['labels'])))
-        print("Error! : len(ans['labels']) != len(bert_pred['labels']) : Please report us")
-        raise
+    if (len(ans['labels']) != len(bert_pred['labels'])):
+        ans_length = len(ans['labels'])
+        bert_length = len(bert_pred['labels'])
+        if ans_length > bert_length:
+            ans = ans[:bert_length]
+        else:
+            bert_pred=bert_pred[:ans_length]
     
     with open(output_dir+'/NER_result_conll.txt', 'w') as out_:
         idx=0
