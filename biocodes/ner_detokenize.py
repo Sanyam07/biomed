@@ -75,9 +75,9 @@ def detokenize(golden_path, pred_token_test_path, pred_label_test_path, output_d
         ans_length = len(ans['labels'])
         bert_length = len(bert_pred['labels'])
         if ans_length > bert_length:
-            ans = ans[:bert_length]
+            ans['labels'] = ans['labels'][:bert_length]
         else:
-            bert_pred=bert_pred[:ans_length]
+            bert_pred['labels'] = bert_pred['labels'][:ans_length]
     
     with open(output_dir+'/NER_result_conll.txt', 'w') as out_:
         idx=0
