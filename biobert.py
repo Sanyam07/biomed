@@ -74,32 +74,51 @@ class BioBert(NER):
         test_lines = list()
         dev_lines = list()
         devel_lines = list()
-
+        train_lines_dict = list()
+        test_lines_dict = list()
+        dev_lines_dict = list()
+        devel_lines_dict = list()
         for line in data['train']:
             temp = line.split()
             if temp:
-                train_lines.append([temp[0], temp[3]])
+                if temp[3] != 'O':
+                    train_lines.append([temp[0], temp[3].split('-')[0]])
+                else:
+                    train_lines.append([temp[0], temp[3]])
+                train_lines_dict.append([temp[0], temp[3]])
             else:
                 train_lines.append(['', ''])
 
         for line in data['test']:
             temp = line.split()
             if temp:
-                test_lines.append([temp[0], temp[3]])
+                if temp[3] != 'O':
+                    test_lines.append([temp[0], temp[3].split('-')[0]])
+                else:
+                    test_lines.append([temp[0], temp[3]])
+                test_lines_dict.append([temp[0], temp[3]])
             else:
                 test_lines.append(['', ''])
 
         for line in data['dev'][dev_length//4:]:
             temp = line.split()
             if temp:
-                dev_lines.append([temp[0], temp[3]])
+                if temp[3] != 'O':
+                    dev_lines.append([temp[0], temp[3].split('-')[0]])
+                else:
+                    dev_lines.append([temp[0], temp[3]])
+                dev_lines_dict.append([temp[0], temp[3]])
             else:
                 dev_lines.append(['', ''])
 
         for line in data['dev'][:dev_length//4]:
             temp = line.split()
             if temp:
-                devel_lines.append([temp[0], temp[3]])
+                if temp[3] != 'O':
+                    devel_lines.append([temp[0], temp[3].split('-')[0]])
+                else:
+                    devel_lines.append([temp[0], temp[3]])
+                devel_lines_dict.append([temp[0], temp[3]])
             else:
                 devel_lines.append(['', ''])
 
@@ -119,10 +138,10 @@ class BioBert(NER):
             tsv_writer = csv.writer(f, delimiter='\t')
             for row in devel_lines:
                 tsv_writer.writerow(row)
-        train_dict = dict(train_lines)
-        test_dict = dict(test_lines)
-        dev_dict = dict(dev_lines)
-        devel_dict = dict(devel_lines)
+        train_dict = dict(train_lines_dict)
+        test_dict = dict(test_lines_dict)
+        dev_dict = dict(dev_lines_dict)
+        devel_dict = dict(devel_lines_dict)
         mega_dict = {**train_dict, **test_dict, **dev_dict, **devel_dict}
         self.ground_truth_dict = mega_dict
         del train_lines
