@@ -37,7 +37,7 @@ def main(input_file_path):
     with timeout(timeout_val+10):
         with timeout(timeout_val+5):
             with timeout(timeout_val):
-                my_model.train()
+                my_model.train(data=data)
 
     pred_vals = my_model.predict(data=data['test'])
     my_model.evaluate(predictions=pred_vals, ground_truths=test_labels)
