@@ -182,7 +182,28 @@ class BioBert(NER):
 
         detokenize(golden_path, pred_token_test_path, pred_label_test_path, output_dir)
 
+        input_filename = self.output_dir+"/NER_result_conll.txt"
+        output_filename = self.output_dir+"predicted_output.txt"
+        all_list_tokenized = list()
+        with open(input_filename, mode='r', encoding='utf-8') as f:
+            raw_data = f.read().splitlines()
 
+        for line in raw_data:
+            all_list_tokenized.append(line.split())
+        zipped = list(zip(*all_list_tokenized))
+        del all_list_tokenized
+        true_labels = [self.ground_truth_dict[x] for x in zipped[0]]
+        zipped[1] = true_labels
+        true_preds = zip(*zipped)
+
+        with open(output_filename, 'w') as f:
+            tsv_writer = csv.writer(f, delimiter=' ')
+            for row in true_preds:
+                tsv_writer.writerow(row)
+
+        print("Predictions output is available in: "+output_filename)
+
+        return None
 
     def evaluate(self, predictions=None, ground_truths=None, *args, **kwargs):
         data_dir = self.data_dir
@@ -192,7 +213,7 @@ class BioBert(NER):
         output_dir = self.output_dir
         do_train = False
         do_eval = True
-        do_predict = True
+        do_predict = False
         main_funct(data_dir=data_dir, init_checkpoint=init_checkpoint, vocab_file=vocab_file,
                    bert_config_file=bert_config_file, output_dir=output_dir, do_train=do_train, do_eval=do_eval,
                    do_predict=do_predict)
