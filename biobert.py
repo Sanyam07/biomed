@@ -161,7 +161,8 @@ class BioBert(NER):
 
     def train(self, data=None, *args, **kwargs):
         data_dir = self.data_dir
-        init_checkpoint = '/content/gdrive/My Drive/biobert_pubmed/biobert_model.ckpt'
+        # init_checkpoint = '/content/gdrive/My Drive/biobert_pubmed/biobert_model.ckpt'
+        init_checkpoint = 'gs://bert_models/2018_10_18/uncased_L-12_H-768_A-12/bert_model.ckpt'
         vocab_file = self.config_root+'/vocab.txt'
         bert_config_file = self.config_root+'/bert_config.json'
         output_dir = self.output_dir
