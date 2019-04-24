@@ -37,5 +37,5 @@ data = my_model.read_dataset(file_dict=files_dict)
 test_labels = my_model.convert_ground_truth(data=data['test'])
 with timeout(timeout_val):
     my_model.train()
-my_model.predict()
-my_model.evaluate()
+# my_model.predict()
+# my_model.evaluate()
