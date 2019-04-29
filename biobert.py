@@ -15,7 +15,7 @@ class BioBert(NER):
         self.config_root = self.project_root+'/config_dir'
         # self.output_dir = '/home/de11bu23n58k/output_dir'
         self.output_dir = self.project_root+'/output_dir'
-        self.init_checkpoint = 'gs://biobert_cs548/biobert_pubmed/biobert_model.ckpt'
+        self.init_checkpoint = 'gs://biomed_pretrained/biobert_pubmed/biobert_model.ckpt'
         self.ground_truth_dict = dict()
         self.zip_threshold = 250
         self.upper_limit = 8
