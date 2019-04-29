@@ -1,17 +1,11 @@
 from biobert import BioBert
 import signal
 from contextlib import contextmanager
-from google.cloud import storage
-import os
 
 timeout_val = 180
 files_dict = {'train': './our_data_format/training.tsv',
               'test': './our_data_format/development.tsv',
               'dev': './our_data_format/evaluation.tsv'}
-
-storage_client = storage.Client.from_service_account_json(
-        'key.json')
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
 
 @contextmanager
 def timeout(time):
